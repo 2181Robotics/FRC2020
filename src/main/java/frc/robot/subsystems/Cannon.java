@@ -46,7 +46,7 @@ public class Cannon extends PIDSubsystem {
     belt2.setSafetyEnabled(false);
     setDefaultCommand(new CannonDefault(this));
     enable();
-    getController().setTolerance(50,5000);
+    getController().setTolerance(50,10);
     // se
     // SmartDashboard.putNumber("cannonspeed", 0);
   }
