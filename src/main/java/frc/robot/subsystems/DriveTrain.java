@@ -27,6 +27,8 @@ public class DriveTrain extends SubsystemBase {
   private WPI_VictorSPX left2 = new WPI_VictorSPX(4);
   private SpeedControllerGroup left = new SpeedControllerGroup(left1, left2);
 
+  public int direction = 1;
+
   // private DifferentialDrive drive = new DifferentialDrive(left, right);
 
   public DriveTrain() {
@@ -46,6 +48,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void drive(double speed, double turn) {
+    speed *= direction;
 
     // drive.arcadeDrive(turn, -speed); //backwards bc reasons
     left.set((turn+speed)/2);

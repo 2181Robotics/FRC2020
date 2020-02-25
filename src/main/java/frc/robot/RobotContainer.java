@@ -72,6 +72,8 @@ public class RobotContainer {
 
     joy.whenHeld(5, new PanelSimple(m_panel, .5));
     joy.whenHeld(6, new PanelSimple(m_panel, -.5));
+
+    joy.whenPressed(8, new InstantCommand(() -> m_drive.direction = -m_drive.direction));
   }
 
 
