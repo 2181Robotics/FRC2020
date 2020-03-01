@@ -8,20 +8,27 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
+// import edu.wpi.first.wpilibj.XboxController;
+// import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.DistanceShoot;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.PanelSimple;
 import frc.robot.commands.RunBelt;
 import frc.robot.commands.SetCannonSpeed;
+import frc.robot.commands.TargetTrack;
 import frc.robot.subsystems.Cannon;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Panel;
+import recording.RecordAuto;
 import recording.RecordedJoystick;
+import recording.ReplayAuto;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -41,6 +48,7 @@ public class RobotContainer {
 
 
   public static RecordedJoystick joy = new RecordedJoystick(0);
+  private final JoystickButton rb = new JoystickButton(joy.getJoystick(), 7);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -54,6 +62,8 @@ public class RobotContainer {
     SmartDashboard.putData(new InstantCommand(() -> m_cannon.setPID()));
     SmartDashboard.putData("Start", new SetCannonSpeed(m_cannon, 800));
     SmartDashboard.putData("Stop", new SetCannonSpeed(m_cannon, 0));
+
+    SmartDashboard.putNumber("selected", 0);
   }
 
   /**
@@ -63,17 +73,28 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    rb.toggleWhenPressed(new RecordAuto(joy, "/home/lvuser/test.txt"));
+
     joy.toggleWhenPressed(3, new SetCannonSpeed(m_cannon, 0).andThen(new RunBelt(m_cannon, -2, false)));
     joy.toggleWhenPressed(4, new SetCannonSpeed(m_cannon, 0).andThen(new RunBelt(m_cannon, 2, true)));
 
-    joy.toggleWhenPressed(1, (new RunBelt(m_cannon, -2, false).withTimeout(.1)).andThen(
-      new RunBelt(m_cannon, 0, false).withTimeout(0), new SetCannonSpeed(m_cannon, 700),new WaitCommand(4), new RunBelt(m_cannon, 2, false)));
+    joy.toggleWhenPressed(1, new DistanceShoot(m_cannon));
+    // joy.toggleWhenPressed(1, (new RunBelt(m_cannon, -2, false).withTimeout(.1)).andThen(
+      // new RunBelt(m_cannon, 0, false).withTimeout(0), new SetCannonSpeed(m_cannon, 700), new RunBelt(m_cannon, 2, false)));
     joy.toggleWhenPressed(2, new SetCannonSpeed(m_cannon, 0));
 
     joy.whenHeld(5, new PanelSimple(m_panel, .5));
     joy.whenHeld(6, new PanelSimple(m_panel, -.5));
 
-    joy.whenPressed(8, new InstantCommand(() -> m_drive.direction = -m_drive.direction));
+    joy.whenPressed(8, new InstantCommand(() -> {m_drive.direction = -m_drive.direction;
+                                                SmartDashboard.putNumber("selected", 1-SmartDashboard.getNumber("selected", 0));}));
+    boolean[] buttons = {true,true,true,true,true,true,true,true,true,false};
+    boolean[] joys = {true,true,true,true,true,true};
+    joy.toggleWhenPressed(10, new ReplayAuto("/home/lvuser/test.txt", joy, buttons, joys));
+
+    joy.toggleWhenPressed(9, (new TargetTrack(m_drive).withTimeout(2.5)).alongWith((new SetCannonSpeed(m_cannon, -400).withTimeout(.1).andThen(new RunBelt(m_cannon, -2, false).withTimeout(.1)))
+                                                                .andThen(new RunBelt(m_cannon, 0, false).withTimeout(0), new DistanceShoot(m_cannon).withTimeout(2)))
+                              .andThen(new RunBelt(m_cannon, 2, false).alongWith(new TargetTrack(m_drive).perpetually())));
   }
 
 

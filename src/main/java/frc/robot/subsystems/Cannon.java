@@ -40,13 +40,13 @@ public class Cannon extends PIDSubsystem {
   public Cannon() {
     super(
         // The PIDController used by the subsystem
-        new PIDController(0.001,0,0)); //DONT MESS WITH THESE, YOU COULD BURN OUT MOTOR
+        new PIDController(0.00075,0.0000,.0003)); //DONT MESS WITH THESE, YOU COULD BURN OUT MOTOR
     spinmotor.setSafetyEnabled(false);
     belt1.setSafetyEnabled(false);
     belt2.setSafetyEnabled(false);
     setDefaultCommand(new CannonDefault(this));
     enable();
-    getController().setTolerance(50,5000);
+    getController().setTolerance(25,10);
     // se
     // SmartDashboard.putNumber("cannonspeed", 0);
   }
@@ -64,6 +64,8 @@ public class Cannon extends PIDSubsystem {
     SmartDashboard.putNumber("Flywheel Speed", flywheel.getRate());
     // inmotor.set(-.5);
     SmartDashboard.putBoolean("Intake Sensor", intake.get());
+    SmartDashboard.putNumber("Position Error", getController().getPositionError());
+    SmartDashboard.putNumber("Velocity Error", getController().getVelocityError());
     // if (spinspeed == 0) state = 0;
     // if (state == 0) {
     //   if (spinspeed != 0) state = 1;
@@ -86,6 +88,10 @@ public class Cannon extends PIDSubsystem {
     SmartDashboard.putNumber("current draw", pdp.getCurrent(1));
 
     // This method will be called once per scheduler run
+  }
+
+  public double getFlywheel() {
+    return flywheel.getRate();
   }
 
   public void spin(double speed) {
