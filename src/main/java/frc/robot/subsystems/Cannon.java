@@ -35,12 +35,14 @@ public class Cannon extends PIDSubsystem {
 
   private double spinspeed = 0;
 
+  public double ballshoot = 0;
+
   private int state = 0;
 
   public Cannon() {
     super(
         // The PIDController used by the subsystem
-        new PIDController(0.00075,0.0000,.0003)); //DONT MESS WITH THESE, YOU COULD BURN OUT MOTOR
+        new PIDController(0.0008,0.0000,.0003)); //DONT MESS WITH THESE, YOU COULD BURN OUT MOTOR
     spinmotor.setSafetyEnabled(false);
     belt1.setSafetyEnabled(false);
     belt2.setSafetyEnabled(false);

@@ -599,26 +599,29 @@ if __name__ == "__main__":
         print("Setting up NetworkTables server")
         ntinst.startServer()
     else:
-        cond = threading.Condition()
-        notified = [False]
-        con = False
-        
-        def connectionListener(connected, info):
-            global con
-            con = True
-            print(info, '; Connected=%s' % connected)
-            with cond:
-                notified[0] = True
-                cond.notify()
-        
         print("Setting up NetworkTables client for team {}".format(team))
-        NetworkTables.initialize(server='10.21.81.2')
-        NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
-
-        with cond:
-            print("Waiting")
-            if not notified[0]:
-                cond.wait()
+##        time.sleep(15)
+        ntinst.startClientTeam(team)
+##        cond = threading.Condition()
+##        notified = [False]
+##        con = False
+##        
+##        def connectionListener(connected, info):
+##            global con
+##            con = True
+##            print(info, '; Connected=%s' % connected)
+##            with cond:
+##                notified[0] = connected
+##                cond.notify()
+##        
+##        print("Setting up NetworkTables client for team {}".format(team))
+##        NetworkTables.initialize(server='10.21.81.2')
+##        NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
+##
+##        with cond:
+##            print("Waiting")
+##            while not notified[0]:
+##                cond.wait()
 
     # start cameras
     for config in cameraConfigs:

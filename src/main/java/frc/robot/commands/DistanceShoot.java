@@ -17,8 +17,8 @@ public class DistanceShoot extends CommandBase {
    * Creates a new CannonDefault.
    */
   private Cannon cannon;
-  private static double[] x = {14,20,28,35,41};
-  private static double[] y = {720,703,715,731,750};
+  private static double[] x = {14,20,28,35,41,48,58,69};
+  private static double[] y = {720,703,715,731,750,752,792,861};
   private double speed;
 
   public DistanceShoot(Cannon can) {
@@ -65,6 +65,7 @@ public class DistanceShoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return cannon.getController().atSetpoint() && (Math.abs(cannon.getFlywheel() + speed) < 50);
+    return false;
+    // return cannon.getController().atSetpoint() && (Math.abs(cannon.getFlywheel() + speed) < 50);
   }
 }

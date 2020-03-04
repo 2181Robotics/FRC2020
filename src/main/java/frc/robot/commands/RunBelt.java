@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Cannon;
 
@@ -17,6 +18,9 @@ public class RunBelt extends CommandBase {
   private Cannon can;
   private double speed;
   private boolean limiting;
+  private boolean spike = false;
+  // private double ballcount = 0;
+  private static PowerDistributionPanel pdp = new PowerDistributionPanel();
 
   public RunBelt(Cannon cannon, double speed, boolean limit) {
     addRequirements(cannon);
@@ -29,6 +33,7 @@ public class RunBelt extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    can.ballshoot = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -40,6 +45,19 @@ public class RunBelt extends CommandBase {
     // } else {
       // can.move_belt(0);
     // }
+    if (!limiting) {
+      double v = pdp.getCurrent(1);
+      if (spike) {
+        if (v < 9) spike = false;
+      } else {
+        if (v > 13) {
+          spike = true;
+          can.setSetpoint(can.getController().getSetpoint()*(1-(5-can.ballshoot)*.01));
+          can.ballshoot += 2.2;
+          // if (ballcount == 3) ballcount = 5;
+        }
+      }
+    }
   }
 
   // Called once the command ends or is interrupted.

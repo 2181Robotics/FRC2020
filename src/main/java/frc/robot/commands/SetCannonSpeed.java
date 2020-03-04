@@ -23,7 +23,7 @@ public class SetCannonSpeed extends CommandBase {
     addRequirements(cannon);
     can = cannon;
     this.speed = speed;
-    // SmartDashboard.putNumber("shooting speed", 0);
+    SmartDashboard.putNumber("shooting speed", 0);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -31,8 +31,8 @@ public class SetCannonSpeed extends CommandBase {
   @Override
   public void initialize() {
     // if (can.get_intake()){
-      can.spin(speed);
-      // can.spin(SmartDashboard.getNumber("shooting speed", 0));
+      // can.spin(speed);
+      can.spin(SmartDashboard.getNumber("shooting speed", 0));
     // }
   }
 
