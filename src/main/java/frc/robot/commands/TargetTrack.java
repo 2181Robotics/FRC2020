@@ -23,7 +23,7 @@ public class TargetTrack extends PIDCommand {
   public TargetTrack(DriveTrain driveTrain) {
     super(
         // The controller that the command will use
-        new PIDController(.017, 0.00000002, 0.002),
+        new PIDController(.018, 0.00000000, 0.004),
         // This should return the measurement
         () -> SmartDashboard.getNumber("posx", 104),
         // This should return the setpoint (can also be a constant)

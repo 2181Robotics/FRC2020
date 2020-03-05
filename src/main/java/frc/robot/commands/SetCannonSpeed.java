@@ -31,8 +31,8 @@ public class SetCannonSpeed extends CommandBase {
   @Override
   public void initialize() {
     // if (can.get_intake()){
-      // can.spin(speed);
-      can.spin(SmartDashboard.getNumber("shooting speed", 0));
+      can.spin(speed);
+      // can.spin(SmartDashboard.getNumber("shooting speed", 0));
     // }
   }
 

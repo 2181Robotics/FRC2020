@@ -53,7 +53,7 @@ public class RunBelt extends CommandBase {
         if (v > 13) {
           spike = true;
           can.setSetpoint(can.getController().getSetpoint()*(1-(5-can.ballshoot)*.01));
-          can.ballshoot += 2.2;
+          can.ballshoot += 2.1;
           // if (ballcount == 3) ballcount = 5;
         }
       }

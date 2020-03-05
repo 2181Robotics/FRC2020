@@ -17,8 +17,8 @@ public class DistanceShoot extends CommandBase {
    * Creates a new CannonDefault.
    */
   private Cannon cannon;
-  private static double[] x = {14,20,28,35,41,48,58,69};
-  private static double[] y = {720,703,715,731,750,752,792,861};
+  private static double[] x = {14,18,20,28,35,41,48,58,69};
+  private static double[] y = {718,703,701,713,729,740,750,790,859};
   private double speed;
 
   public DistanceShoot(Cannon can) {

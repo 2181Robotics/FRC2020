@@ -89,13 +89,14 @@ public class RobotContainer {
     joy.whenHeld(5, new PanelSimple(m_panel, .5));
     joy.whenHeld(6, new PanelSimple(m_panel, -.5));
 
+    // joy.toggleWhenPressed(7, new TargetTrack(m_drive).perpetually());
     joy.whenPressed(8, new InstantCommand(() -> {m_drive.direction = -m_drive.direction;
                                                 SmartDashboard.putNumber("selected", 1-SmartDashboard.getNumber("selected", 0));}));
     boolean[] buttons = {true,true,true,true,true,true,true,true,true,false};
     boolean[] joys = {true,true,true,true,true,true};
     joy.toggleWhenPressed(10, new ReplayAuto("/home/lvuser/test.txt", joy, buttons, joys));
 
-    joy.toggleWhenPressed(9, (new TargetTrack(m_drive).withTimeout(2.5)).alongWith((new SetCannonSpeed(m_cannon, -400).withTimeout(.1).andThen(new RunBelt(m_cannon, -2, false).withTimeout(.2)))
+    joy.toggleWhenPressed(9, (new TargetTrack(m_drive).withTimeout(2.5)).alongWith((new SetCannonSpeed(m_cannon, -500).withTimeout(.2).andThen(new RunBelt(m_cannon, -2, false).withTimeout(.2)))
                                                                 .andThen(new RunBelt(m_cannon, 0, false).withTimeout(0), new DistanceShoot(m_cannon).withTimeout(2)))
                               .andThen(new RunBelt(m_cannon, 1, false).alongWith(new TargetTrack(m_drive).perpetually())));
   }
