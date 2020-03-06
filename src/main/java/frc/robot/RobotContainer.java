@@ -44,7 +44,7 @@ public class RobotContainer {
   private final Panel m_panel = new Panel();
 
   private final Command m_autoCommand = (new TargetTrack(m_drive).withTimeout(2.5)).alongWith((new SetCannonSpeed(m_cannon, -400).withTimeout(.1).andThen(new RunBelt(m_cannon, -2, false).withTimeout(.2)))
-  .andThen(new RunBelt(m_cannon, 0, false).withTimeout(0), new DistanceShoot(m_cannon).withTimeout(1.7)))
+  .andThen(new RunBelt(m_cannon, 0, false).withTimeout(0), new SetCannonSpeed(m_cannon, 700).withTimeout(1.7)))
 .andThen(new RunBelt(m_cannon, 1, false).alongWith(new TargetTrack(m_drive).perpetually())).withInterrupt(() -> {return m_cannon.ballshoot >= 6;}).andThen(new InstantCommand(() -> {m_drive.drive(.5,0);}, m_drive).perpetually().withTimeout(1));
 
 
@@ -77,14 +77,21 @@ public class RobotContainer {
   private void configureButtonBindings() {
     rb.toggleWhenPressed(new RecordAuto(joy, "/home/lvuser/test.txt"));
 
-    joy.toggleWhenPressed(3, new SetCannonSpeed(m_cannon, 0).andThen(new RunBelt(m_cannon, -2, false)));
-    joy.toggleWhenPressed(4, new SetCannonSpeed(m_cannon, 0).andThen(new RunBelt(m_cannon, 2, true)));
+    // set speed   line     (9, new SetCannonSpeed(m_cannon, 0).alongWith(new RunBelt(m_cannon, 0, false)).andThen
+    joy.toggleWhenPressed(9, (new TargetTrack(m_drive).withTimeout(2.5)).alongWith((new SetCannonSpeed(m_cannon, -500).withTimeout(.2).andThen(new RunBelt(m_cannon, -2, false).withTimeout(.2)))
+    .andThen(new RunBelt(m_cannon, 0, false).withTimeout(0), new SetCannonSpeed(m_cannon, 670).withTimeout(2)))
+.andThen(new RunBelt(m_cannon, 1, false).alongWith(new TargetTrack(m_drive).perpetually())));
+    // trench 
+    joy.toggleWhenPressed(10, (new TargetTrack(m_drive).withTimeout(2.5)).alongWith((new SetCannonSpeed(m_cannon, -500).withTimeout(.2).andThen(new RunBelt(m_cannon, -2, false).withTimeout(.2)))
+    .andThen(new RunBelt(m_cannon, 0, false).withTimeout(0), new SetCannonSpeed(m_cannon, 895.25).withTimeout(2)))
+.andThen(new RunBelt(m_cannon, 1, false).alongWith(new TargetTrack(m_drive).perpetually())));
 
+    joy.toggleWhenPressed(4, new SetCannonSpeed(m_cannon, 0).andThen(new RunBelt(m_cannon, 2, true)));
     // joy.toggleWhenPressed(1, new DistanceShoot(m_cannon));
-    joy.toggleWhenPressed(1, new SetCannonSpeed(m_cannon,0));
+    joy.toggleWhenPressed(3, new SetCannonSpeed(m_cannon, 895.25).withTimeout(2).andThen(new RunBelt(m_cannon, 1, false)));
     // joy.toggleWhenPressed(1, (new RunBelt(m_cannon, -2, false).withTimeout(.1)).andThen(
       // new RunBelt(m_cannon, 0, false).withTimeout(0), new SetCannonSpeed(m_cannon, 700), new RunBelt(m_cannon, 2, false)));
-    joy.toggleWhenPressed(2, new SetCannonSpeed(m_cannon, 0));
+    joy.toggleWhenPressed(2, new SetCannonSpeed(m_cannon, 0).andThen(new RunBelt(m_cannon, 0, false)));
 
     joy.whenHeld(5, new PanelSimple(m_panel, .5));
     joy.whenHeld(6, new PanelSimple(m_panel, -.5));
@@ -94,11 +101,11 @@ public class RobotContainer {
                                                 SmartDashboard.putNumber("selected", 1-SmartDashboard.getNumber("selected", 0));}));
     boolean[] buttons = {true,true,true,true,true,true,true,true,true,false};
     boolean[] joys = {true,true,true,true,true,true};
-    joy.toggleWhenPressed(10, new ReplayAuto("/home/lvuser/test.txt", joy, buttons, joys));
+    //joy.toggleWhenPressed(10, new ReplayAuto("/home/lvuser/test.txt", joy, buttons, joys));
 
-    joy.toggleWhenPressed(9, (new TargetTrack(m_drive).withTimeout(2.5)).alongWith((new SetCannonSpeed(m_cannon, -500).withTimeout(.2).andThen(new RunBelt(m_cannon, -2, false).withTimeout(.2)))
-                                                                .andThen(new RunBelt(m_cannon, 0, false).withTimeout(0), new DistanceShoot(m_cannon).withTimeout(2)))
-                              .andThen(new RunBelt(m_cannon, 1, false).alongWith(new TargetTrack(m_drive).perpetually())));
+    // joy.toggleWhenPressed(1, (new TargetTrack(m_drive).withTimeout(2.5)).alongWith((new SetCannonSpeed(m_cannon, -500).withTimeout(.2).andThen(new RunBelt(m_cannon, -2, false).withTimeout(.2)))
+    //                                                             .andThen(new RunBelt(m_cannon, 0, false).withTimeout(0), new DistanceShoot(m_cannon).withTimeout(2)))
+    //                           .andThen(new RunBelt(m_cannon, 1, false).alongWith(new TargetTrack(m_drive).perpetually())));
   }
 
 
