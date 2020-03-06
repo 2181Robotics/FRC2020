@@ -44,7 +44,7 @@ public class RobotContainer {
   private final Panel m_panel = new Panel();
 
   private final Command m_autoCommand = (new TargetTrack(m_drive).withTimeout(2.5)).alongWith((new SetCannonSpeed(m_cannon, -400).withTimeout(.1).andThen(new RunBelt(m_cannon, -2, false).withTimeout(.2)))
-  .andThen(new RunBelt(m_cannon, 0, false).withTimeout(0), new SetCannonSpeed(m_cannon, 700).withTimeout(1.7)))
+  .andThen(new RunBelt(m_cannon, 0, false).withTimeout(0), new SetCannonSpeed(m_cannon, 670).withTimeout(1.7)))
 .andThen(new RunBelt(m_cannon, 1, false).alongWith(new TargetTrack(m_drive).perpetually())).withInterrupt(() -> {return m_cannon.ballshoot >= 6;}).andThen(new InstantCommand(() -> {m_drive.drive(.5,0);}, m_drive).perpetually().withTimeout(1));
 
 
