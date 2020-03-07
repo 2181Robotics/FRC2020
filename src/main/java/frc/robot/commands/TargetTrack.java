@@ -25,7 +25,7 @@ public class TargetTrack extends PIDCommand {
         // The controller that the command will use
         new PIDController(.018, 0.00000000, 0.004),
         // This should return the measurement
-        () -> SmartDashboard.getNumber("posx", 104),
+        () -> SmartDashboard.getNumber("posx", 100),
         // This should return the setpoint (can also be a constant)
         () -> 104,
         // This uses the output
@@ -42,6 +42,6 @@ public class TargetTrack extends PIDCommand {
   @Override
   public boolean isFinished() {
     // return getController().atSetpoint();
-    return Math.abs(SmartDashboard.getNumber("posx", 104)-104)< 10 && SmartDashboard.getBoolean("stable", false);
+    return Math.abs(SmartDashboard.getNumber("posx", 100)-104)< 10 && SmartDashboard.getBoolean("stable", false);
   }
 }
